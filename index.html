@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rose Day</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
+    <style>
+        body{
+            background: linear-gradient(135deg, #fadede 0%, #ffd6e7 25%, #ffcce0 50%, #ffc2d9 75%, #ffb8d2 100%);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        /* Romantic twinkling stars background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+            opacity: 0;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        
+        /* Floating hearts background */
+        .bg-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .bg-heart {
+            position: absolute;
+            font-size: var(--size);
+            color: rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            animation: float-heart var(--float-duration) ease-in infinite;
+        }
+        
+        @keyframes float-heart {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Soft glow effect */
+        .glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,182,193,0.4) 0%, rgba(255,182,193,0) 70%);
+            filter: blur(40px);
+            pointer-events: none;
+            z-index: 0;
+            animation: glow-move 20s ease-in-out infinite;
+        }
+        
+        .glow:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,105,180,0.3) 0%, rgba(255,105,180,0) 70%);
+            animation-delay: 5s;
+            animation-duration: 25s;
+        }
+        
+        .glow:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(255,192,203,0.5) 0%, rgba(255,192,203,0) 70%);
+            animation-delay: 10s;
+            animation-duration: 15s;
+        }
+        
+        @keyframes glow-move {
+            0%, 100% {
+                transform: translate(20vw, 20vh);
+            }
+            33% {
+                transform: translate(60vw, 60vh);
+            }
+            66% {
+                transform: translate(40vw, 30vh);
+            }
+        }
+        
+        /* Interactive rose petals falling */
+        .petals-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .falling-petal {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #ff9ebb 0%, #fe7696 100%);
+            border-radius: 50% 0 50% 50%;
+            transform: rotate(45deg);
+            opacity: 0.7;
+            filter: drop-shadow(0 0 3px rgba(254, 118, 150, 0.3));
+            animation: fall linear infinite;
+            pointer-events: auto;
+            cursor: pointer;
+            z-index: 1;
+        }
+        
+        .falling-petal:hover {
+            opacity: 1;
+            filter: drop-shadow(0 0 6px rgba(254, 118, 150, 0.6));
+            transform: rotate(45deg) scale(1.2);
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+        
+        /* Romantic light beams */
+        .light-beam {
+            position: fixed;
+            width: 2px;
+            height: 150px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.8), transparent);
+            filter: blur(1px);
+            pointer-events: none;
+            z-index: 0;
+            animation: light-beam 8s ease-in-out infinite;
+            opacity: 0;
+        }
+        
+        @keyframes light-beam {
+            0%, 100% {
+                opacity: 0;
+                transform: translateY(-100px) rotate(var(--rotation));
+            }
+            50% {
+                opacity: 0.7;
+                transform: translateY(100vh) rotate(var(--rotation));
+            }
+        }
+        
+        /* Enhanced container */
+        .container{
+            width: 800px;
+            height: 400px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h1{
+            font-family: 'Sacramento', cursive;
+            color: #FE7696;
+            font-size: 40px;
+            transition: all 0.5s ease;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .letter{
+            width: 600px;
+            height: 400px;
+            display: inline-block;
+            position: relative;
+        }
+        
+        .rose{
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            right: 0;
+            display: inline-block;
+            animation: yidon 5s infinite;
+            transform: translateY(40%);
+            z-index: 100;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
+        }
+        
+        .rose:hover {
+            transform: translateY(40%) scale(1.05);
+            filter: drop-shadow(0 15px 20px rgba(0, 0, 0, 0.3));
+        }
+        
+        .petal{
+            width: 50px;
+            height: 50px;
+            background: #fe7696;
+            border-radius: 0px 50%;
+            position: absolute;
+            box-shadow: 0 0 10px #D1123F;
+            z-index: 2;
+            transform-origin: bottom right; 
+            animation: zhankai2 10s infinite;
+            transition: all 0.5s ease;
+        }
+        
+        .petal:nth-child(2){
+            transform-origin: right bottom;
+            transform: rotate(90deg);
+            background: #fe7696;
+            left: -10px;
+            animation: zhankai1 10s infinite;
+        }
+        
+        .petal:nth-child(3){
+            width: 40px;
+            height: 40px;
+            left: 10px;
+            top: -20px;
+            z-index: 1;
+            background: #f03a64;
+            transform-origin: bottom right; 
+            animation: zhankai2 10s infinite;
+        }
+        
+        .petal:nth-child(4){
+            transform: rotate(90deg);
+            width: 40px;
+            height: 40px;
+            left: 0px;
+            top: -20px;
+            z-index: 1;
+            background: #f03a64;
+            transform-origin: bottom right; 
+            animation: zhankai1 10s infinite;
+        }
+        
+        .petal:nth-child(5){
+            width: 50px;
+            height: 50px;
+            border-radius: 20px;
+            left: 20px;
+            top: -30px;
+            z-index: 0;
+            background: #d1123f;
+            transition: all 0.5s ease;
+        }
+        
+        .leaf{
+            position: absolute;
+            top: 120px;
+            left: -115px;
+        }
+        
+        .stem{
+            width: 240px;
+            height: 40px;
+            background: transparent;
+            border: 8px solid #8ac78a;
+            border-color: #77a377 transparent transparent transparent;
+            border-radius: 50% 50%;
+            transform: rotate(100deg);
+        }
+        
+        .leafs{
+            width: 50px;
+            height: 40px;
+            border-radius: 0px 50%;
+            background: #77a377;
+            position: absolute;
+            top: 0;
+            left: 100px;
+            z-index: 49;
+        }
+        
+        .leafs:nth-child(2){
+            width: 40px;
+            height: 20px;
+            top: 40px;
+            left: 140px;
+            transform: rotate(120deg);
+        }
+        
+        @keyframes yidon{
+            50%{
+                transform: translateY(35%);
+            }
+            100%{
+                transform: translateY(40%);
+            }
+        }
+        
+        @keyframes zhankai1{
+            50%{
+                transform: rotate(110deg);
+            }
+            100%{
+                transform: rotate(90deg);
+            }
+        }
+        
+        @keyframes zhankai2{
+            50%{
+                transform: rotate(-20deg);
+            }
+            100%{
+                transform: rotate(0deg);
+            }
+        }
+        
+        /* Color palette indicator */
+        .color-palette {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+            flex-wrap: wrap;
+            max-width: 200px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin: 5px;
+            cursor: pointer;
+            border: 2px solid white;
+            transition: transform 0.2s ease;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        }
+        
+        .color-option:hover {
+            transform: scale(1.2);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+        }
+        
+        .current-color-indicator {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-family: 'Sacramento', cursive;
+            font-size: 22px;
+            color: #333;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: opacity 0.5s ease;
+        }
+        
+        /* Floating hearts */
+        .floating-heart {
+            position: absolute;
+            font-size: 24px;
+            color: #fe7696;
+            opacity: 0;
+            z-index: 5;
+            pointer-events: none;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        
+        /* Particle effects */
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #fe7696;
+            pointer-events: none;
+            z-index: 6;
+            filter: drop-shadow(0 0 3px rgba(254, 118, 150, 0.5));
+        }
+        
+        /* Message bubble */
+        .message-bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            font-family: 'Sacramento', cursive;
+            font-size: 24px;
+            color: #fe7696;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            max-width: 300px;
+            text-align: center;
+            z-index: 20;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Sparkle effects */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 7;
+            filter: drop-shadow(0 0 3px white);
+        }
+        
+        /* Interactive background */
+        .bg-interaction {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        
+        /* Color transition animation */
+        @keyframes colorChange {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .color-change {
+            animation: colorChange 0.5s ease;
+        }
+        
+        /* Romantic message overlay */
+        .romantic-message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-family: 'Sacramento', cursive;
+            font-size: 28px;
+            color: #fe7696;
+            z-index: 100;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: none;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Heart cursor trail */
+        .cursor-heart {
+            position: absolute;
+            font-size: 20px;
+            color: #ff4081;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Left and Right Image Containers */
+        .image-left {
+            position: absolute;
+            left: -220px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 200px;
+            height: 300px;
+            z-index: 20;
+        }
+        
+        .image-right {
+            position: absolute;
+            right: -220px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 200px;
+            height: 300px;
+            z-index: 20;
+        }
+        
+        .image-left img, .image-right img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .image-left img:hover, .image-right img:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.25));
+        }
+        
+        /* Add glow effect to images */
+        .image-left::before, .image-right::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(circle, rgba(254, 118, 150, 0.2) 0%, rgba(254, 118, 150, 0) 70%);
+            filter: blur(15px);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .image-left:hover::before, .image-right:hover::before {
+            opacity: 1;
+        }
+        
+        /* Add floating animation to images */
+        @keyframes gentleFloat {
+            0%, 100% {
+                transform: translateY(-50%) translateY(0);
+            }
+            50% {
+                transform: translateY(-50%) translateY(-10px);
+            }
+        }
+        
+        .image-left, .image-right {
+            animation: gentleFloat 6s ease-in-out infinite;
+        }
+        
+        .image-right {
+            animation-delay: 3s; /* Stagger the animations */
+        }
+        
+        /* Make images responsive */
+        @media (max-width: 1200px) {
+            .image-left {
+                left: -180px;
+                width: 150px;
+                height: 250px;
+            }
+            
+            .image-right {
+                right: -180px;
+                width: 150px;
+                height: 250px;
+            }
+        }
+        
+        @media (max-width: 1000px) {
+            .image-left, .image-right {
+                display: none; /* Hide images on smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Romantic background elements -->
+    <div class="stars" id="starsContainer"></div>
+    <div class="bg-hearts" id="bgHeartsContainer"></div>
+    <div class="glow"></div>
+    <div class="glow"></div>
+    <div class="glow"></div>
+    <div class="petals-container" id="petalsContainer"></div>
+    <div class="light-beams" id="lightBeamsContainer"></div>
+    
+    <!-- Romantic message -->
+    <div class="romantic-message" id="romanticMessage">Happy Rose Day, My Love! 💖</div>
+    
+    <div class="bg-interaction"></div>
+    <div class="container">
+        <!-- Left Image -->
+        <div class="image-left">
+            <img src="imgbin_b01a39db179c3ea33e13314d17a021fd.png" alt="Romantic Image Left">
+        </div>
+        
+        <!-- Right Image (Added) -->
+        <div class="image-right">
+            <img src="—Pngtree—valentines day red and pink_20303425.png" alt="Romantic Image Right">
+        </div>
+        
+        <div class="letter">
+            <h1 id="main-message">Your smile is as beautiful as rose, I hope you can always smile.<br>Happy Rose Day to my Precious Chaaku</h1>
+        </div>
+        <div class="rose" id="rose">
+            <div class="flower">
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <div class="petal"></div>
+                <div class="petal"></div>
+            </div>
+            <div class="leaf">
+                <div class="stem"></div>
+                <div class="leafs"></div>
+                <div class="leafs"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Color palette for rose -->
+    <div class="color-palette" id="colorPalette">
+        <div class="color-option" style="background-color: #fe7696;" data-color="#fe7696"></div>
+        <div class="color-option" style="background-color: #ff4081;" data-color="#ff4081"></div>
+        <div class="color-option" style="background-color: #e91e63;" data-color="#e91e63"></div>
+        <div class="color-option" style="background-color: #c2185b;" data-color="#c2185b"></div>
+        <div class="color-option" style="background-color: #ff6ec7;" data-color="#ff6ec7"></div>
+        <div class="color-option" style="background-color: #ff1493;" data-color="#ff1493"></div>
+        <div class="color-option" style="background-color: #ff69b4;" data-color="#ff69b4"></div>
+        <div class="color-option" style="background-color: #db7093;" data-color="#db7093"></div>
+        <div class="color-option" style="background-color: #ff1493;" data-color="#ff1493"></div>
+        <div class="color-option" style="background-color: #ff00ff;" data-color="#ff00ff"></div>
+        <div class="color-option" style="background-color: #ff77ff;" data-color="#ff77ff"></div>
+        <div class="color-option" style="background-color: #ff33cc;" data-color="#ff33cc"></div>
+        <div class="color-option" style="background-color: #cc0066;" data-color="#cc0066"></div>
+        <div class="color-option" style="background-color: #ff0066;" data-color="#ff0066"></div>
+        <div class="color-option" style="background-color: #ff3377;" data-color="#ff3377"></div>
+    </div>
+    
+    <!-- Current color indicator -->
+    <div class="current-color-indicator" id="colorIndicator">
+        Click the rose to change color!
+    </div>
+
+    <script>
+        // Store the original rose position to ensure it doesn't move
+        const rose = document.getElementById('rose');
+        const originalRoseStyle = window.getComputedStyle(rose);
+        const originalTransform = rose.style.transform;
+        
+        // Track if rose has been clicked (for initial indicator)
+        let roseHasBeenClicked = false;
+        
+        // Create romantic background elements
+        function createRomanticBackground() {
+            // Create twinkling stars
+            const starsContainer = document.getElementById('starsContainer');
+            for (let i = 0; i < 80; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
+                star.style.animationDelay = Math.random() * 5 + 's';
+                starsContainer.appendChild(star);
+            }
+            
+            // Create floating background hearts
+            const bgHeartsContainer = document.getElementById('bgHeartsContainer');
+            for (let i = 0; i < 15; i++) {
+                const bgHeart = document.createElement('div');
+                bgHeart.className = 'bg-heart';
+                bgHeart.innerHTML = '❤️';
+                bgHeart.style.left = Math.random() * 100 + 'vw';
+                bgHeart.style.setProperty('--size', Math.random() * 20 + 15 + 'px');
+                bgHeart.style.setProperty('--float-duration', Math.random() * 10 + 15 + 's');
+                bgHeart.style.animationDelay = Math.random() * 20 + 's';
+                bgHeartsContainer.appendChild(bgHeart);
+            }
+            
+            // Create falling petals
+            const petalsContainer = document.getElementById('petalsContainer');
+            for (let i = 0; i < 20; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'falling-petal';
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.animationDuration = Math.random() * 10 + 15 + 's';
+                petal.style.animationDelay = Math.random() * 20 + 's';
+                petal.style.opacity = Math.random() * 0.5 + 0.3;
+                petalsContainer.appendChild(petal);
+                
+                // Make petals interactive
+                petal.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    createParticles(e.clientX, e.clientY, 10);
+                    createFloatingHeart(e.clientX, e.clientY);
+                    
+                    // Change petal color on click
+                    const colors = ['#ff9ebb', '#fe7696', '#f03a64', '#ff4081', '#ff6ec7'];
+                    petal.style.background = `linear-gradient(135deg, ${colors[Math.floor(Math.random() * colors.length)]} 0%, ${colors[Math.floor(Math.random() * colors.length)]} 100%)`;
+                    petal.style.opacity = 1;
+                    
+                    // Make petal disappear with animation
+                    setTimeout(() => {
+                        petal.style.animation = 'none';
+                        petal.style.transition = 'all 0.5s ease';
+                        petal.style.opacity = '0';
+                        petal.style.transform = 'scale(0) rotate(180deg)';
+                        
+                        setTimeout(() => {
+                            if (petal.parentNode) {
+                                petal.parentNode.removeChild(petal);
+                                createNewPetal();
+                            }
+                        }, 500);
+                    }, 300);
+                });
+            }
+            
+            // Create light beams
+            const lightBeamsContainer = document.getElementById('lightBeamsContainer');
+            for (let i = 0; i < 5; i++) {
+                const beam = document.createElement('div');
+                beam.className = 'light-beam';
+                beam.style.left = Math.random() * 100 + 'vw';
+                beam.style.setProperty('--rotation', Math.random() * 10 - 5 + 'deg');
+                beam.style.animationDelay = Math.random() * 10 + 's';
+                lightBeamsContainer.appendChild(beam);
+            }
+            
+            
+        }
+        
+        // Create a new petal when one disappears
+        function createNewPetal() {
+            const petalsContainer = document.getElementById('petalsContainer');
+            const petal = document.createElement('div');
+            petal.className = 'falling-petal';
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.animationDuration = Math.random() * 10 + 15 + 's';
+            petal.style.opacity = Math.random() * 0.5 + 0.3;
+            petalsContainer.appendChild(petal);
+            
+            petal.addEventListener('click', (e) => {
+                e.stopPropagation();
+                createParticles(e.clientX, e.clientY, 10);
+                createFloatingHeart(e.clientX, e.clientY);
+                
+                const colors = ['#ff9ebb', '#fe7696', '#f03a64', '#ff4081', '#ff6ec7'];
+                petal.style.background = `linear-gradient(135deg, ${colors[Math.floor(Math.random() * colors.length)]} 0%, ${colors[Math.floor(Math.random() * colors.length)]} 100%)`;
+                petal.style.opacity = 1;
+                
+                setTimeout(() => {
+                    petal.style.animation = 'none';
+                    petal.style.transition = 'all 0.5s ease';
+                    petal.style.opacity = '0';
+                    petal.style.transform = 'scale(0) rotate(180deg)';
+                    
+                    setTimeout(() => {
+                        if (petal.parentNode) {
+                            petal.parentNode.removeChild(petal);
+                            createNewPetal();
+                        }
+                    }, 500);
+                }, 300);
+            });
+        }
+        
+        // Show romantic message
+        function showRomanticMessage(message) {
+            const romanticMessage = document.getElementById('romanticMessage');
+            romanticMessage.textContent = message;
+            romanticMessage.style.display = 'block';
+            
+            // Animate in
+            setTimeout(() => {
+                romanticMessage.style.opacity = '1';
+                romanticMessage.style.transform = 'translateX(-50%) translateY(0)';
+            }, 10);
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                romanticMessage.style.opacity = '0';
+                romanticMessage.style.transform = 'translateX(-50%) translateY(-20px)';
+                
+                setTimeout(() => {
+                    romanticMessage.style.display = 'none';
+                }, 500);
+            }, 3000);
+        }
+        
+        // Add heart cursor trail
+        let lastCursorX = 0;
+        let lastCursorY = 0;
+        let cursorHeartTimer;
+        
+        document.addEventListener('mousemove', (e) => {
+            const deltaX = Math.abs(e.clientX - lastCursorX);
+            const deltaY = Math.abs(e.clientY - lastCursorY);
+            
+            // Create cursor heart trail when mouse moves fast enough
+            if (deltaX + deltaY > 15 && !cursorHeartTimer) {
+                cursorHeartTimer = setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'cursor-heart';
+                    heart.innerHTML = '❤️';
+                    heart.style.left = e.clientX + 'px';
+                    heart.style.top = e.clientY + 'px';
+                    document.body.appendChild(heart);
+                    
+                    // Random size and color
+                    const size = Math.random() * 15 + 15;
+                    heart.style.fontSize = size + 'px';
+                    const colors = ['#ff4081', '#fe7696', '#ff1493', '#ff6ec7', '#ff69b4'];
+                    heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // Animate heart
+                    heart.animate([
+                        { opacity: 0.8, transform: 'translate(-50%, -50%) scale(1)' },
+                        { opacity: 0, transform: 'translate(-50%, -50%) scale(0.5) translateY(-20px)' }
+                    ], {
+                        duration: 1000,
+                        easing: 'ease-out'
+                    }).onfinish = () => heart.remove();
+                    
+                    cursorHeartTimer = null;
+                }, 50);
+            }
+            
+            lastCursorX = e.clientX;
+            lastCursorY = e.clientY;
+        });
+        
+        // Rose color management
+        let currentColorIndex = 0;
+        const roseColors = [
+            { primary: "#fe7696", secondary: "#f03a64", tertiary: "#d1123f" },
+            { primary: "#ff4081", secondary: "#e91e63", tertiary: "#c2185b" },
+            { primary: "#ff6ec7", secondary: "#ff1493", tertiary: "#ff69b4" },
+            { primary: "#ff00ff", secondary: "#ff77ff", tertiary: "#ff33cc" },
+            { primary: "#ff0066", secondary: "#cc0066", tertiary: "#ff3377" },
+            { primary: "#db7093", secondary: "#ff1493", tertiary: "#ff69b4" },
+            { primary: "#ff1493", secondary: "#ff4081", tertiary: "#e91e63" },
+            { primary: "#ff77ff", secondary: "#ff00ff", tertiary: "#ff33cc" },
+            { primary: "#ff3377", secondary: "#ff0066", tertiary: "#cc0066" },
+            { primary: "#e91e63", secondary: "#c2185b", tertiary: "#ff4081" },
+            { primary: "#ff69b4", secondary: "#ff1493", tertiary: "#ff6ec7" },
+            { primary: "#ff33cc", secondary: "#ff00ff", tertiary: "#ff77ff" },
+            { primary: "#cc0066", secondary: "#ff0066", tertiary: "#ff3377" },
+            { primary: "#c2185b", secondary: "#e91e63", tertiary: "#ff4081" },
+            { primary: "#ff1493", secondary: "#ff69b4", tertiary: "#ff6ec7" }
+        ];
+        
+        // Color names for display
+        const colorNames = [
+            "Classic Rose Pink",
+            "Bright Pink",
+            "Hot Pink",
+            "Magenta",
+            "Vibrant Rose",
+            "Pale Violet Red",
+            "Deep Pink",
+            "Light Fuchsia",
+            "Ruby Red",
+            "Raspberry",
+            "Light Pink",
+            "Purple Rose",
+            "Crimson",
+            "Berry",
+            "Fuchsia Rose"
+        ];
+        
+        // Function to change rose color
+        function changeRoseColor(colorIndex = null) {
+            if (colorIndex !== null) {
+                currentColorIndex = colorIndex;
+            } else {
+                currentColorIndex = (currentColorIndex + 1) % roseColors.length;
+            }
+            
+            const colors = roseColors[currentColorIndex];
+            const petals = document.querySelectorAll('.petal');
+            
+            // Apply color change with animation
+            petals.forEach((petal, index) => {
+                // Add animation class
+                petal.classList.add('color-change');
+                
+                // Remove animation class after animation completes
+                setTimeout(() => {
+                    petal.classList.remove('color-change');
+                }, 500);
+                
+                // Change colors based on petal position
+                if (index === 0 || index === 1) {
+                    petal.style.background = colors.primary;
+                    petal.style.boxShadow = `0 0 10px ${colors.secondary}`;
+                } else if (index === 2 || index === 3) {
+                    petal.style.background = colors.secondary;
+                    petal.style.boxShadow = `0 0 8px ${colors.tertiary}`;
+                } else if (index === 4) {
+                    petal.style.background = colors.tertiary;
+                    petal.style.boxShadow = `0 0 6px ${colors.primary}`;
+                }
+            });
+            
+            // Update color indicator (only show for 3 seconds after first click)
+            if (roseHasBeenClicked) {
+                updateColorIndicator(`Rose Color: ${colorNames[currentColorIndex]}`, true);
+            }
+            
+            // Create color change particles
+            createColorParticles(colors.primary, colors.secondary, colors.tertiary);
+            
+            return colors;
+        }
+        
+        // Function to create color particles when changing rose color
+        function createColorParticles(color1, color2, color3) {
+            const roseRect = rose.getBoundingClientRect();
+            const centerX = roseRect.left + roseRect.width / 2;
+            const centerY = roseRect.top + roseRect.height / 2;
+            
+            // Create particles in the color of the new rose
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = centerX + 'px';
+                    particle.style.top = centerY + 'px';
+                    
+                    // Randomly choose one of the new colors
+                    const colors = [color1, color2, color3];
+                    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    document.body.appendChild(particle);
+                    
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 30 + Math.random() * 70;
+                    const size = 4 + Math.random() * 8;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    
+                    particle.animate([
+                        { 
+                            opacity: 1,
+                            transform: 'translate(0, 0) scale(1)',
+                        },
+                        { 
+                            opacity: 0,
+                            transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0)`,
+                        }
+                    ], {
+                        duration: 1000 + Math.random() * 500,
+                        easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                    }).onfinish = () => particle.remove();
+                }, i * 50);
+            }
+        }
+        
+        // Function to update color indicator
+        function updateColorIndicator(colorName, hideAutomatically = false) {
+            const colorIndicator = document.getElementById('colorIndicator');
+            colorIndicator.textContent = colorName;
+            colorIndicator.style.display = 'block';
+            colorIndicator.style.opacity = '1';
+            
+            // Only hide automatically if specified (not for initial indicator)
+            if (hideAutomatically) {
+                setTimeout(() => {
+                    colorIndicator.style.opacity = '0';
+                    setTimeout(() => {
+                        colorIndicator.style.display = 'none';
+                    }, 500);
+                }, 3000);
+            }
+        }
+        
+        // Function to toggle color palette
+        function toggleColorPalette() {
+            const colorPalette = document.getElementById('colorPalette');
+            if (colorPalette.style.display === 'flex') {
+                colorPalette.style.display = 'none';
+            } else {
+                colorPalette.style.display = 'flex';
+                
+                // Auto-hide palette after 5 seconds
+                setTimeout(() => {
+                    colorPalette.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        // Function to create floating hearts
+        function createFloatingHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+            document.body.appendChild(heart);
+            
+            // Animation
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 50 + Math.random() * 100;
+            const duration = 1000 + Math.random() * 1000;
+            
+            const animation = heart.animate([
+                { 
+                    opacity: 0.8,
+                    transform: 'translate(0, 0) scale(1)',
+                },
+                { 
+                    opacity: 0,
+                    transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance - 100}px) scale(0.5)`,
+                }
+            ], {
+                duration: duration,
+                easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)'
+            });
+            
+            animation.onfinish = () => heart.remove();
+        }
+        
+        // Function to create particles
+        function createParticles(x, y, count = 15) {
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                document.body.appendChild(particle);
+                
+                const angle = (Math.PI * 2 * i) / count;
+                const distance = 20 + Math.random() * 50;
+                const size = 3 + Math.random() * 7;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Random color variations
+                const colors = ['#fe7696', '#f03a64', '#d1123f', '#ff9ebb', '#ff4081', '#ff6ec7'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.animate([
+                    { 
+                        opacity: 1,
+                        transform: 'translate(0, 0) scale(1)',
+                    },
+                    { 
+                        opacity: 0,
+                        transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0)`,
+                    }
+                ], {
+                    duration: 800 + Math.random() * 400,
+                    easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                }).onfinish = () => particle.remove();
+            }
+        }
+        
+        // Function to create sparkle effects
+        function createSparkles(x, y, count = 8) {
+            for (let i = 0; i < count; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = x + 'px';
+                sparkle.style.top = y + 'px';
+                document.body.appendChild(sparkle);
+                
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 10 + Math.random() * 30;
+                const delay = Math.random() * 200;
+                
+                sparkle.animate([
+                    { opacity: 0, transform: 'translate(0, 0) scale(0)' },
+                    { opacity: 1, transform: 'translate(0, 0) scale(1)' },
+                    { opacity: 0, transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0)` }
+                ], {
+                    duration: 600,
+                    delay: delay,
+                    easing: 'ease-out'
+                }).onfinish = () => sparkle.remove();
+            }
+        }
+        
+        // Function to show message bubbles
+        const messages = [
+            "You're special! 🌹",
+            "Thinking of you 💖",
+            "Sending love 💕",
+            "Forever cherished 💫",
+            "My happiness 😊",
+            "Always in my heart 💞"
+        ];
+        
+        function showMessageBubble(x, y, message = null) {
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            bubble.textContent = message || messages[Math.floor(Math.random() * messages.length)];
+            bubble.style.left = (x - 150) + 'px';
+            bubble.style.top = (y - 100) + 'px';
+            document.body.appendChild(bubble);
+            
+            // Ensure bubble stays within viewport
+            const rect = bubble.getBoundingClientRect();
+            if (rect.left < 10) bubble.style.left = '10px';
+            if (rect.right > window.innerWidth - 10) {
+                bubble.style.left = (window.innerWidth - rect.width - 10) + 'px';
+            }
+            if (rect.top < 10) bubble.style.top = '10px';
+            
+            // Animate in
+            setTimeout(() => {
+                bubble.style.opacity = '1';
+                bubble.style.transform = 'translateY(0)';
+            }, 10);
+            
+            // Animate out and remove
+            setTimeout(() => {
+                bubble.style.opacity = '0';
+                bubble.style.transform = 'translateY(-20px)';
+                setTimeout(() => bubble.remove(), 500);
+            }, 3000);
+        }
+        
+        // Function to change text color and add pulse effect
+        function pulseText() {
+            const text = document.getElementById('main-message');
+            const colors = ['#FE7696', '#f03a64', '#d1123f', '#ff4081', '#e91e63'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            text.animate([
+                { color: text.style.color || '#FE7696', transform: 'scale(1)' },
+                { color: randomColor, transform: 'scale(1.05)' },
+                { color: text.style.color || '#FE7696', transform: 'scale(1)' }
+            ], {
+                duration: 1000,
+                easing: 'ease-in-out'
+            });
+            
+            text.style.color = randomColor;
+        }
+        
+        // Function to make rose petals flutter on hover
+        function setupRoseInteractivity() {
+            const petals = document.querySelectorAll('.petal');
+            
+            rose.addEventListener('mouseenter', () => {
+                petals.forEach((petal, index) => {
+                    const delay = index * 100;
+                    petal.animate([
+                        { transform: petal.style.transform || getComputedStyle(petal).transform },
+                        { transform: 'rotate(' + (Math.random() * 30 - 15) + 'deg)' },
+                        { transform: petal.style.transform || getComputedStyle(petal).transform }
+                    ], {
+                        duration: 800,
+                        delay: delay,
+                        easing: 'ease-in-out'
+                    });
+                });
+                
+                createSparkles(
+                    rose.offsetLeft + rose.offsetWidth / 2,
+                    rose.offsetTop + rose.offsetHeight / 2,
+                    12
+                );
+            });
+            
+            // Ensure rose position never changes
+            const observer = new MutationObserver(() => {
+                if (rose.style.transform !== originalTransform) {
+                    rose.style.transform = originalTransform;
+                }
+            });
+            
+            observer.observe(rose, { 
+                attributes: true, 
+                attributeFilter: ['style'] 
+            });
+        }
+        
+        // Background interaction - create ripples
+        function setupBackgroundInteractivity() {
+            const bg = document.querySelector('.bg-interaction');
+            
+            bg.addEventListener('click', (e) => {
+                createParticles(e.clientX, e.clientY, 10);
+                createFloatingHeart(e.clientX, e.clientY);
+                
+                // Create ripple effect
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.left = (e.clientX - 50) + 'px';
+                ripple.style.top = (e.clientY - 50) + 'px';
+                ripple.style.width = '100px';
+                ripple.style.height = '100px';
+                ripple.style.border = '2px solid rgba(254, 118, 150, 0.3)';
+                ripple.style.borderRadius = '50%';
+                ripple.style.pointerEvents = 'none';
+                ripple.style.zIndex = '1';
+                document.body.appendChild(ripple);
+                
+                ripple.animate([
+                    { transform: 'scale(0)', opacity: 1 },
+                    { transform: 'scale(2)', opacity: 0 }
+                ], {
+                    duration: 1200,
+                    easing: 'ease-out'
+                }).onfinish = () => ripple.remove();
+            });
+        }
+        
+        // Setup image interactivity
+        function setupImageInteractivity() {
+            const images = document.querySelectorAll('.image-left img, .image-right img');
+            
+            images.forEach((img) => {
+                // Click effect for images
+                img.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    
+                    // Create special effects when clicking on images
+                    const rect = img.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    
+                    // Create heart particles
+                    for (let i = 0; i < 15; i++) {
+                        setTimeout(() => {
+                            createFloatingHeart(centerX, centerY);
+                        }, i * 50);
+                    }
+                    
+                    // Create sparkle effect
+                    createSparkles(centerX, centerY, 20);
+                    
+                    // Show special message
+                    showMessageBubble(centerX, centerY, "You're purrfect!😊💖");
+                });
+                
+                // Hover effect enhancement
+                img.addEventListener('mouseenter', () => {
+                    // Add glow effect
+                    img.style.filter = 'drop-shadow(0 15px 30px rgba(254, 118, 150, 0.4)) brightness(1.1)';
+                });
+                
+                img.addEventListener('mouseleave', () => {
+                    // Remove glow effect
+                    img.style.filter = 'drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15))';
+                });
+            });
+        }
+        
+        // Auto-generate effects periodically
+        function startAutoEffects() {
+            setInterval(() => {
+                if (Math.random() > 0.7) { // 30% chance
+                    const x = 100 + Math.random() * (window.innerWidth - 200);
+                    const y = 100 + Math.random() * (window.innerHeight - 200);
+                    createFloatingHeart(x, y);
+                }
+                
+                if (Math.random() > 0.8) { // 20% chance
+                    pulseText();
+                }
+                
+                if (Math.random() > 0.9) { // 10% chance
+                    const x = 200 + Math.random() * (window.innerWidth - 400);
+                    const y = 150 + Math.random() * (window.innerHeight - 300);
+                    showMessageBubble(x, y);
+                }
+            }, 2000);
+            
+            // Auto-change rose color every 10 seconds (only after first click)
+            setInterval(() => {
+                if (Math.random() > 0.5 && roseHasBeenClicked) { // 50% chance and only if user has interacted
+                    changeRoseColor();
+                }
+            }, 10000);
+        }
+        
+        // Click anywhere to create effects
+        document.addEventListener('click', (e) => {
+            // Don't trigger if clicking on rose or images (they have their own effects)
+            if (!e.target.closest('.rose') && !e.target.closest('.color-option') && !e.target.closest('.image-left img') && !e.target.closest('.image-right img')) {
+                createParticles(e.clientX, e.clientY);
+                createFloatingHeart(e.clientX, e.clientY);
+                
+                // 50% chance to show message bubble
+                if (Math.random() > 0.5) {
+                    showMessageBubble(e.clientX, e.clientY);
+                }
+            }
+        });
+        
+        // Mouse move effects
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        let mouseMoveTimer;
+        
+        document.addEventListener('mousemove', (e) => {
+            const deltaX = Math.abs(e.clientX - lastMouseX);
+            const deltaY = Math.abs(e.clientY - lastMouseY);
+            
+            // Create trailing particles when mouse moves fast
+            if (deltaX + deltaY > 20) {
+                if (!mouseMoveTimer) {
+                    mouseMoveTimer = setTimeout(() => {
+                        createParticles(e.clientX, e.clientY, 3);
+                        mouseMoveTimer = null;
+                    }, 50);
+                }
+            }
+            
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        });
+        
+        // Initialize everything when page loads
+        window.addEventListener('load', () => {
+            // Create romantic background first
+            createRomanticBackground();
+            
+            setupRoseInteractivity();
+            setupBackgroundInteractivity();
+            setupImageInteractivity();
+            startAutoEffects();
+            
+            // Setup rose click event for color change
+            rose.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent triggering document click
+                
+                // Hide the initial indicator on first click
+                if (!roseHasBeenClicked) {
+                    const colorIndicator = document.getElementById('colorIndicator');
+                    colorIndicator.style.opacity = '0';
+                    setTimeout(() => {
+                        colorIndicator.style.display = 'none';
+                    }, 500);
+                    roseHasBeenClicked = true;
+                }
+                
+                const colors = changeRoseColor();
+                
+                // Special rose-click effects
+                createParticles(
+                    e.clientX || rose.offsetLeft + rose.offsetWidth / 2,
+                    e.clientY || rose.offsetTop + rose.offsetHeight / 2,
+                    25
+                );
+                
+                // Create a heart with the new color
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.style.position = 'absolute';
+                heart.style.left = (rose.offsetLeft + rose.offsetWidth / 2 - 15) + 'px';
+                heart.style.top = (rose.offsetTop - 30) + 'px';
+                heart.style.fontSize = '40px';
+                heart.style.color = colors.primary;
+                heart.style.zIndex = '1000';
+                heart.style.pointerEvents = 'none';
+                document.body.appendChild(heart);
+                
+                heart.animate([
+                    { opacity: 1, transform: 'translateY(0) scale(1)' },
+                    { opacity: 0, transform: 'translateY(-80px) scale(1.5)' }
+                ], {
+                    duration: 1500,
+                    easing: 'ease-out'
+                }).onfinish = () => heart.remove();
+                
+                // Show message about color change
+                showMessageBubble(
+                    rose.offsetLeft + rose.offsetWidth / 2,
+                    rose.offsetTop,
+                    `Now it's a ${colorNames[currentColorIndex]} rose!`
+                );
+            });
+            
+            // Setup color palette options
+            const colorOptions = document.querySelectorAll('.color-option');
+            colorOptions.forEach((option, index) => {
+                option.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    
+                    // Hide the initial indicator on first click
+                    if (!roseHasBeenClicked) {
+                        const colorIndicator = document.getElementById('colorIndicator');
+                        colorIndicator.style.opacity = '0';
+                        setTimeout(() => {
+                            colorIndicator.style.display = 'none';
+                        }, 500);
+                        roseHasBeenClicked = true;
+                    }
+                    
+                    changeRoseColor(index);
+                    
+                    // Close palette after selection
+                    document.getElementById('colorPalette').style.display = 'none';
+                });
+            });
+            
+            // Double click on rose to open color palette
+            rose.addEventListener('dblclick', (e) => {
+                e.stopPropagation();
+                toggleColorPalette();
+            });
+            
+            // Initial welcome effect
+            setTimeout(() => {
+                createParticles(window.innerWidth / 2, window.innerHeight / 2, 30);
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(() => {
+                        createFloatingHeart(
+                            window.innerWidth / 2,
+                            window.innerHeight / 2
+                        );
+                    }, i * 100);
+                }
+                
+                // Show initial welcome message
+                showRomanticMessage("For my lil Rose Raaku! 💖");
+                
+                // Show initial color indicator (stays until rose is clicked)
+                updateColorIndicator("Click the rose to change its color!", false);
+            }, 500);
+        });
+        
+        // Prevent any accidental rose movement
+        window.addEventListener('resize', () => {
+            rose.style.transform = originalTransform;
+            rose.style.position = 'absolute';
+            rose.style.right = '0';
+        });
+    </script>
+</body>
+</html>
